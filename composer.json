@@ -1,4 +1,15 @@
 {
+    "name": "channor/php-utilities",
+    "type": "library",
+    "description": "PHP functions",
+    "keywords": ["php", "function", "random-generator", "random-number-generator", "randomize"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Christian Andreassen"
+        }
+    ],
     "require-dev": {
         "phpunit/phpunit": "^9.6"
     },
