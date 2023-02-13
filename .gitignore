@@ -1,0 +1,5 @@
+vendor/
+var/
+bin/
+.conf/
+.phpunit.cache/
