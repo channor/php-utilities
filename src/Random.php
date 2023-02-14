@@ -1,7 +1,14 @@
 <?php
+/**
+ * @author Christian Andreassen
+ * @license MIT
+ */
 
 namespace Channor\Utilities;
 
+/**
+ * A class with random generators.
+ */
 class Random
 {
 
@@ -9,12 +16,13 @@ class Random
      * Generate a random float/decimal between min and max value in multiple intervals with a max
      * sum per interval.
      *
-     * I.e.: echo implode(', ', Random::randIntevalsMax(48, 6, 7, 10)) // 7.5, 9.5, 8, 7.5, 8, 7.5
+     * I.e.: echo implode(', ', Random::randIntervalsMax(48, 6, 7, 10)) // 7.5, 9.5, 8, 7.5, 8, 7.5
      *
      * @param float $target_sum The sum of the generated values.
      * @param integer $intervals Number of intervals. Each interval generates a value between min and max.
      * @param float $min Min value.
      * @param float $max Max value.
+     * @param string $decimal "HALF" gives one decimal 0.5 or 0.0. "NONE" gives no decimal.
      * @return array
      * @throws \Exception
      * @TODO Set decimal precision and choose how to round last digit.
@@ -24,8 +32,8 @@ class Random
         int   $intervals,
         float $min,
         float $max,
-    ): array
-    {
+        string  $decimal = "HALF"
+    ): array {
 
         /** @float $average_number Used to check if target_sum is in range with min/max */
         $average_number = $target_sum / $intervals;
@@ -53,8 +61,16 @@ class Random
             $current_min = $sum_left - ($coming_intervals * $max);
             if ($current_min < $min) $current_min = $min;
 
-            /* Next number is generated with 1 decimal and rounded 0.5 */
-            $next = ( round(( mt_rand($current_min*10, $current_max*10) / 10 ) * 2) / 2 );
+            switch ($decimal) {
+                case "HALF":
+                    $next = (float)( round(( mt_rand($current_min*10, $current_max*10) / 10 ) * 2) / 2 );
+                    break;
+                case "NONE":
+                    $next = mt_rand($current_min, $current_max);
+                    break;
+                default:
+                    throw new \Exception('Unexpected value');
+            }
 
             $numbers[] = (float)$next;
         }
